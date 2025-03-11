@@ -1,0 +1,12 @@
+E:\__iksAdmin\WSServerInfo\bin\Debug\net8.0\WSServerInfo.deps.json
+E:\__iksAdmin\WSServerInfo\bin\Debug\net8.0\WSServerInfo.dll
+E:\__iksAdmin\WSServerInfo\bin\Debug\net8.0\WSServerInfo.pdb
+E:\__iksAdmin\WSServerInfo\obj\Debug\net8.0\WSServerInfo.csproj.AssemblyReference.cache
+E:\__iksAdmin\WSServerInfo\obj\Debug\net8.0\WSServerInfo.GeneratedMSBuildEditorConfig.editorconfig
+E:\__iksAdmin\WSServerInfo\obj\Debug\net8.0\WSServerInfo.AssemblyInfoInputs.cache
+E:\__iksAdmin\WSServerInfo\obj\Debug\net8.0\WSServerInfo.AssemblyInfo.cs
+E:\__iksAdmin\WSServerInfo\obj\Debug\net8.0\WSServerInfo.csproj.CoreCompileInputs.cache
+E:\__iksAdmin\WSServerInfo\obj\Debug\net8.0\WSServerInfo.dll
+E:\__iksAdmin\WSServerInfo\obj\Debug\net8.0\refint\WSServerInfo.dll
+E:\__iksAdmin\WSServerInfo\obj\Debug\net8.0\WSServerInfo.pdb
+E:\__iksAdmin\WSServerInfo\obj\Debug\net8.0\ref\WSServerInfo.dll
