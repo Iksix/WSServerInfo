@@ -8,27 +8,49 @@ using CounterStrikeSharp.API;
 using CounterStrikeSharp.API.Core;
 using CounterStrikeSharp.API.Core.Attributes.Registration;
 using CounterStrikeSharp.API.Modules.Timers;
+using SteamWebAPI2.Interfaces;
+using SteamWebAPI2.Utilities;
 
 namespace WSServerInfo;
 
 public class PluginConfig : BasePluginConfig {
-    public string Address {get; set;} = "localhost:27015"; // ws://localhost:27015/wssinfo
-    public string BotAvatar {get; set;} = "/wssinfo";    
+    public string ServerPort {get; set;} = "27015"; // ws://localhost:27015/wssinfo
     public string SteamWebApi {get; set;} = "";
 }
 
-public class Main : BasePlugin
+public class Main : BasePlugin, IPluginConfig<PluginConfig>
 {
     public override string ModuleName => "WSServerInfo";
     public override string ModuleVersion => "1.0.0";
     public override string ModuleAuthor => "iks__";
     public override string ModuleDescription => "Web-socket server info";
+
+    public PluginConfig Config {get; set;}
+
+    public async Task<PlayerSummaries?> GetPlayerSummaries(ulong steamId)
+    {
+        if (Config.SteamWebApi == "") return null;
+        var webInterfaceFactory = new SteamWebInterfaceFactory(Config.SteamWebApi);
+        var steamInterface = webInterfaceFactory.CreateSteamWebInterface<SteamUser>(new HttpClient());
+        var playerSummaryResponse = await steamInterface.GetPlayerSummaryAsync(steamId);
+        var data = playerSummaryResponse.Data;
+        var summaries = new PlayerSummaries(
+            data.SteamId,
+            data.Nickname,
+            data.ProfileUrl,
+            data.AvatarUrl,
+            data.AvatarFullUrl,
+            data.AvatarUrl
+        );
+        return summaries;
+    }
+
     private static readonly HttpListener _httpListener = new HttpListener();
     // Храним тут коннекты
     private static readonly ConcurrentBag<WebSocket> _webSockets = new ConcurrentBag<WebSocket>();
     private long[] _connects = new long[72];
+    private Dictionary<ulong, string> _avatars {get; set;} = new();
     
-
     public override void Unload(bool hotReload)
     {
         base.Unload(hotReload);
@@ -52,7 +74,14 @@ public class Main : BasePlugin
                 IP = p.IpAddress ?? null,
                 IsBot = p.IsBot,
                 ConnectedAt = _connects[p.Slot],
-                Team = p.TeamNum
+                Team = p.TeamNum,
+                Kills = p.ActionTrackingServices!.MatchStats.Kills,
+                Deaths = p.ActionTrackingServices!.MatchStats.Deaths,
+                Damage = p.ActionTrackingServices!.MatchStats.Damage,
+                Assists = p.ActionTrackingServices!.MatchStats.Assists,
+                HeadShotKills = p.ActionTrackingServices!.MatchStats.HeadShotKills,
+                EntryCount = p.ActionTrackingServices!.MatchStats.EntryCount,
+                AvatarUrl = p.AuthorizedSteamID != null ? _avatars[p.AuthorizedSteamID.SteamId64] : ""
             };
             playerModels.Add(pm);
         }
@@ -76,6 +105,19 @@ public class Main : BasePlugin
         var player = @event.Userid;
         if (player == null || !player.IsValid) return HookResult.Continue;
         _connects[player.Slot] = DateTimeOffset.UtcNow.ToUnixTimeSeconds();
+        if (player.AuthorizedSteamID != null)
+        {
+            var steamid = player.AuthorizedSteamID.SteamId64;
+            _avatars[steamid] = "";
+            Task.Run(async () => {
+                var summ = await GetPlayerSummaries(steamid);
+                if (summ != null)
+                {
+                    _avatars[steamid] = summ.AvatarFull;
+                }
+            });
+        }
+        
         Server.NextFrame(() => {
             UpdateAndSendMessages();
         }); 
@@ -112,7 +154,7 @@ public class Main : BasePlugin
         try
         {
             Console.WriteLine("Starting server..");
-            _httpListener.Prefixes.Add("http://*:27215/wssinfo/");
+            _httpListener.Prefixes.Add($"http://*:{Config.ServerPort}/wssinfo/");
             _httpListener.Start();
             Console.WriteLine("WEB SOCKET STARTED =)");
 
@@ -138,17 +180,16 @@ public class Main : BasePlugin
         
     }
 
-    private static async void ProcessWebSocketRequest(HttpListenerContext context)
+    private async void ProcessWebSocketRequest(HttpListenerContext context)
     {
-        // Принимаем WebSocket-соединение от клиента
         WebSocketContext webSocketContext = await context.AcceptWebSocketAsync(null);
-        
-        // Получаем WebSocket для обмена данными
         WebSocket webSocket = webSocketContext.WebSocket;
 
-        Console.WriteLine("Новое подключение от клиента!");
-        // Добавляем его в список
         _webSockets.Add(webSocket);
+
+        Server.NextFrame(() => {
+            UpdateAndSendMessages();
+        });
 
         await ReceiveMessages(webSocket);
     }
@@ -161,21 +202,17 @@ public class Main : BasePlugin
         {
             try
             {
-                // Ожидаем сообщения от клиента
                 var result = await webSocket.ReceiveAsync(new ArraySegment<byte>(buffer), CancellationToken.None);
                 
                 if (result.MessageType == WebSocketMessageType.Close)
                 {
-                    // Если клиент закрыл соединение, удаляем его из списка
                     _webSockets.TryTake(out _);
                     await webSocket.CloseAsync(WebSocketCloseStatus.NormalClosure, "Закрытие соединения", CancellationToken.None);
-                    Console.WriteLine("Клиент отключился.");
                     break;
                 }
             }
             catch (Exception ex)
             {
-                Console.WriteLine("Ошибка при приёме сообщения: " + ex.Message);
                 break;
             }
         }
@@ -186,7 +223,6 @@ public class Main : BasePlugin
         try
             {
                 string jsonMessage = JsonSerializer.Serialize(playerModels);
-                Console.WriteLine(jsonMessage);
                 byte[] buffer = Encoding.UTF8.GetBytes(jsonMessage);
 
                 foreach (var webSocket in _webSockets)
@@ -196,8 +232,6 @@ public class Main : BasePlugin
                         await webSocket.SendAsync(new ArraySegment<byte>(buffer), WebSocketMessageType.Text, true, CancellationToken.None);
                     }
                 }
-
-                Console.WriteLine("Сообщение отправлено всем подключённым клиентам.");
             }
         catch (Exception ex)
         {
@@ -205,5 +239,8 @@ public class Main : BasePlugin
         }
     }
 
-    
+    public void OnConfigParsed(PluginConfig config)
+    {
+        Config = config;
+    }
 }

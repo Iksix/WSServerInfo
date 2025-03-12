@@ -2,6 +2,22 @@
   "version": 3,
   "targets": {
     "net8.0": {
+      "AutoMapper/12.0.0": {
+        "type": "package",
+        "dependencies": {
+          "Microsoft.CSharp": "4.7.0"
+        },
+        "compile": {
+          "lib/netstandard2.1/AutoMapper.dll": {
+            "related": ".xml"
+          }
+        },
+        "runtime": {
+          "lib/netstandard2.1/AutoMapper.dll": {
+            "related": ".xml"
+          }
+        }
+      },
       "CounterStrikeSharp.API/1.0.305": {
         "type": "package",
         "dependencies": {
@@ -690,6 +706,19 @@
           "buildTransitive/net6.0/_._": {}
         }
       },
+      "Newtonsoft.Json/13.0.1": {
+        "type": "package",
+        "compile": {
+          "lib/netstandard2.0/Newtonsoft.Json.dll": {
+            "related": ".xml"
+          }
+        },
+        "runtime": {
+          "lib/netstandard2.0/Newtonsoft.Json.dll": {
+            "related": ".xml"
+          }
+        }
+      },
       "Scrutor/4.2.2": {
         "type": "package",
         "dependencies": {
@@ -767,6 +796,23 @@
           "lib/net5.0/Serilog.Sinks.File.dll": {
             "related": ".pdb;.xml"
           }
+        }
+      },
+      "SteamWebAPI2/4.4.1": {
+        "type": "package",
+        "dependencies": {
+          "Microsoft.Extensions.DependencyInjection": "6.0.0",
+          "Microsoft.Extensions.Options": "6.0.0",
+          "automapper": "12.0.0",
+          "newtonsoft.json": "13.0.1"
+        },
+        "compile": {
+          "lib/netstandard2.1/Steam.Models.dll": {},
+          "lib/netstandard2.1/SteamWebAPI2.dll": {}
+        },
+        "runtime": {
+          "lib/netstandard2.1/Steam.Models.dll": {},
+          "lib/netstandard2.1/SteamWebAPI2.dll": {}
         }
       },
       "System.Buffers/4.5.1": {
@@ -898,6 +944,21 @@
     }
   },
   "libraries": {
+    "AutoMapper/12.0.0": {
+      "sha512": "0Rmg0zI5AFu1O/y//o9VGyhxKjhggWpk9mOA1tp0DEVx40c61bs+lnQv+0jUq8XbniF7FKgIVvI1perqiMtLrA==",
+      "type": "package",
+      "path": "automapper/12.0.0",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "README.md",
+        "automapper.12.0.0.nupkg.sha512",
+        "automapper.nuspec",
+        "icon.png",
+        "lib/netstandard2.1/AutoMapper.dll",
+        "lib/netstandard2.1/AutoMapper.xml"
+      ]
+    },
     "CounterStrikeSharp.API/1.0.305": {
       "sha512": "WoeI/sQ85HM2UG0ADvtfm7JaWNSETPn4gwTvKTKdX7uRoNPavVuemW1jB7dCKQQMW/7So96FVL0qbqYhE91Jpw==",
       "type": "package",
@@ -2114,6 +2175,33 @@
         "useSharedDesignerContext.txt"
       ]
     },
+    "Newtonsoft.Json/13.0.1": {
+      "sha512": "ppPFpBcvxdsfUonNcvITKqLl3bqxWbDCZIzDWHzjpdAHRFfZe0Dw9HmA0+za13IdyrgJwpkDTDA9fHaxOrt20A==",
+      "type": "package",
+      "path": "newtonsoft.json/13.0.1",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "LICENSE.md",
+        "lib/net20/Newtonsoft.Json.dll",
+        "lib/net20/Newtonsoft.Json.xml",
+        "lib/net35/Newtonsoft.Json.dll",
+        "lib/net35/Newtonsoft.Json.xml",
+        "lib/net40/Newtonsoft.Json.dll",
+        "lib/net40/Newtonsoft.Json.xml",
+        "lib/net45/Newtonsoft.Json.dll",
+        "lib/net45/Newtonsoft.Json.xml",
+        "lib/netstandard1.0/Newtonsoft.Json.dll",
+        "lib/netstandard1.0/Newtonsoft.Json.xml",
+        "lib/netstandard1.3/Newtonsoft.Json.dll",
+        "lib/netstandard1.3/Newtonsoft.Json.xml",
+        "lib/netstandard2.0/Newtonsoft.Json.dll",
+        "lib/netstandard2.0/Newtonsoft.Json.xml",
+        "newtonsoft.json.13.0.1.nupkg.sha512",
+        "newtonsoft.json.nuspec",
+        "packageIcon.png"
+      ]
+    },
     "Scrutor/4.2.2": {
       "sha512": "t5VIYA7WJXoJJo7s4DoHakMGwTu+MeEnZumMOhTCH7kz9xWha24G7dJNxWrHPlu0ZdZAS4jDZCxxAnyaBh7uYw==",
       "type": "package",
@@ -2241,6 +2329,21 @@
         "lib/netstandard2.1/Serilog.Sinks.File.xml",
         "serilog.sinks.file.5.0.0.nupkg.sha512",
         "serilog.sinks.file.nuspec"
+      ]
+    },
+    "SteamWebAPI2/4.4.1": {
+      "sha512": "hejID7bZsWT1HLqcCzbCUC2QftUYc25Mtz5tbZjhDFsbr6ra1qvVPZhAaL/ERxSaNWqiESrQXbQE1U7W7Ezmrg==",
+      "type": "package",
+      "path": "steamwebapi2/4.4.1",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "lib/netstandard2.0/Steam.Models.dll",
+        "lib/netstandard2.0/SteamWebAPI2.dll",
+        "lib/netstandard2.1/Steam.Models.dll",
+        "lib/netstandard2.1/SteamWebAPI2.dll",
+        "steamwebapi2.4.4.1.nupkg.sha512",
+        "steamwebapi2.nuspec"
       ]
     },
     "System.Buffers/4.5.1": {
@@ -2520,7 +2623,8 @@
   },
   "projectFileDependencyGroups": {
     "net8.0": [
-      "CounterStrikeSharp.Api >= 1.0.305"
+      "CounterStrikeSharp.Api >= 1.0.305",
+      "SteamWebAPI2 >= 4.4.1"
     ]
   },
   "packageFolders": {
@@ -2575,6 +2679,10 @@
           "CounterStrikeSharp.Api": {
             "target": "Package",
             "version": "[1.0.305, )"
+          },
+          "SteamWebAPI2": {
+            "target": "Package",
+            "version": "[4.4.1, )"
           }
         },
         "imports": [

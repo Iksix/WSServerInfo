@@ -10,3 +10,4 @@ E:\__iksAdmin\WSServerInfo\obj\Debug\net8.0\WSServerInfo.dll
 E:\__iksAdmin\WSServerInfo\obj\Debug\net8.0\refint\WSServerInfo.dll
 E:\__iksAdmin\WSServerInfo\obj\Debug\net8.0\WSServerInfo.pdb
 E:\__iksAdmin\WSServerInfo\obj\Debug\net8.0\ref\WSServerInfo.dll
+E:\__iksAdmin\WSServerInfo\obj\Debug\net8.0\WSServerInfo.sourcelink.json

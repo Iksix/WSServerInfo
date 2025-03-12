@@ -52,6 +52,10 @@
             "CounterStrikeSharp.Api": {
               "target": "Package",
               "version": "[1.0.305, )"
+            },
+            "SteamWebAPI2": {
+              "target": "Package",
+              "version": "[4.4.1, )"
             }
           },
           "imports": [

@@ -8,6 +8,7 @@
 
   <ItemGroup>
     <PackageReference Include="CounterStrikeSharp.Api" Version="1.0.305" />
+    <PackageReference Include="SteamWebAPI2" Version="4.4.1" />
   </ItemGroup>
 
 </Project>

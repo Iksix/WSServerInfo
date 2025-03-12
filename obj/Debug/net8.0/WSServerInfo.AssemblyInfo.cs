@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("WSServerInfo")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+c90767192fdd04c6cf0e28b018bf68d9e84673b2")]
 [assembly: System.Reflection.AssemblyProductAttribute("WSServerInfo")]
 [assembly: System.Reflection.AssemblyTitleAttribute("WSServerInfo")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
