@@ -7,7 +7,6 @@ using System.Text.Json;
 using CounterStrikeSharp.API;
 using CounterStrikeSharp.API.Core;
 using CounterStrikeSharp.API.Core.Attributes.Registration;
-using CounterStrikeSharp.API.Modules.Timers;
 using SteamWebAPI2.Interfaces;
 using SteamWebAPI2.Utilities;
 
@@ -25,7 +24,7 @@ public class Main : BasePlugin, IPluginConfig<PluginConfig>
     public override string ModuleAuthor => "iks__";
     public override string ModuleDescription => "Web-socket server info";
 
-    public PluginConfig Config {get; set;}
+    public PluginConfig Config {get; set;} = null!;
 
     public async Task<PlayerSummaries?> GetPlayerSummaries(ulong steamId)
     {
@@ -96,7 +95,6 @@ public class Main : BasePlugin, IPluginConfig<PluginConfig>
         Task.Run(async () => {
             await StartServer();
         });
-
     }
 
     [GameEventHandler]
